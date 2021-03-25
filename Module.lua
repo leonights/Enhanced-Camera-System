@@ -22,104 +22,91 @@ local isSteppedIn = false --To define the state when moveing camera without righ
 
 --- Functions ---
 
-function ECS:MouseCameraOn() --Enable moving-camera-without-right-clicking mode
+function ECS:MouseCamera(Status) --To toggle moving-camera-without-right-clicking mode
 	
-	isSteppedIn = true
-	UserInputService.MouseIconEnabled = false
+	isSteppedIn = Status
+	UserInputService.MouseIconEnabled = not Status
 	
 end
 
-function ECS:MouseCameraOff() --Disable moving-camera-without-right-clicking mode
-
-	isSteppedIn = false
-	UserInputService.MouseIconEnabled = true
-
-end
-
-function ECS:AlignOn() --Enable character alignment to the camera
+function ECS:Alignment(Status) --To toggle character alignment to the camera
 	
 	local Character = Player.Character
 	local Humanoid = Character:WaitForChild("Humanoid")
 	
-	Humanoid.AutoRotate = false
-	isAligned = true
+	Humanoid.AutoRotate = not Status
+	isAligned = Status
 	
 end
 
-function ECS:AlignOff() --Disable character alignment to the camera
-
-	local Character = Player.Character
-	local Humanoid = Character:WaitForChild("Humanoid")
-
-	Humanoid.AutoRotate = true
-	isAligned = false
-
-end
-
-function ECS:Aim() --Enable camera offset with zoom effect
+function ECS:CameraMode(Mode) --To toggle different camera modes
 	
-	local Character = Player.Character
-	local Humanoid = Character:WaitForChild("Humanoid")
-	
-	local FieldOfView = {FieldOfView = DefaultFieldOfView - 20} --Edit the amount of FOV that you would like to substract to achieve zoom effect
-	local CameraOffset = {CameraOffset = Vector3.new(2, 1, 0)} --Edit your desired camera offset
-	
-	local TweenFieldOfView = TweenService:Create(CurrentCamera, CameraTweenInfo, FieldOfView)
-	local TweenCameraOffset = TweenService:Create(Humanoid, CameraTweenInfo, CameraOffset)
-	
-	TweenFieldOfView:Play()
-	TweenCameraOffset:Play()
+	if Mode == "Aim" then
 		
-end
-
-function ECS:AimScope() --Enable first person mode with scope zoom effect
-
-	local Character = Player.Character
-
-	local FieldOfView = {FieldOfView = DefaultFieldOfView - 50} --Edit the amount of FOV that you would like to substract to achieve zoom effect
-
-	local TweenFieldOfView = TweenService:Create(CurrentCamera, CameraTweenInfo, FieldOfView)
-
-	if Player.CameraMode == Enum.CameraMode.Classic then --To achieve first person camera
-
-		Player.CameraMode = Enum.CameraMode.LockFirstPerson
-
-	end
-
-	TweenFieldOfView:Play()
-
-end
-
-function ECS:AimFirstPerson() --Enable first person mode
+		local Character = Player.Character
+		local Humanoid = Character:WaitForChild("Humanoid")
 	
-	if Player.CameraMode == Enum.CameraMode.Classic then --To achieve first person camera
-		
-		Player.CameraMode = Enum.CameraMode.LockFirstPerson
-		
-	end
-
-end
-
-function ECS:UnAim() --Reset all offset / camera mode
+		local FieldOfView = {FieldOfView = DefaultFieldOfView - 20} --Edit the amount of FOV that you would like to substract to achieve zoom effect
+		local CameraOffset = {CameraOffset = Vector3.new(2, 1, 0)} --Edit your desired camera offset
 	
-	local Character = Player.Character
-	local Humanoid = Character:WaitForChild("Humanoid")
-
-	local FieldOfView = {FieldOfView = DefaultFieldOfView} --To reset FOV
-	local CameraOffset = {CameraOffset = Vector3.new(0, 0, 0)} --To reset camera offset
+		local TweenFieldOfView = TweenService:Create(CurrentCamera, CameraTweenInfo, FieldOfView)
+		local TweenCameraOffset = TweenService:Create(Humanoid, CameraTweenInfo, CameraOffset)
 	
-	local TweenFieldOfView = TweenService:Create(CurrentCamera, CameraTweenInfo, FieldOfView)
-	local TweenCameraOffset = TweenService:Create(Humanoid, CameraTweenInfo, CameraOffset)
+		TweenFieldOfView:Play()
+		TweenCameraOffset:Play()
 	
-	if Player.CameraMode == Enum.CameraMode.LockFirstPerson then --To reset camera mode
-		
-		Player.CameraMode = Enum.CameraMode.Classic
-
 	end
 	
-	TweenFieldOfView:Play()
-	TweenCameraOffset:Play()
+	if Mode == "FirstPerson" then
+		
+		if Player.CameraMode == Enum.CameraMode.Classic then --To achieve first person camera
+			
+			Player.CameraMode = Enum.CameraMode.LockFirstPerson
+			
+		end
+	
+	end
+	
+	if Mode == "Scope" then
+		
+		local Character = Player.Character
 
+		local FieldOfView = {FieldOfView = DefaultFieldOfView - 50} --Edit the amount of FOV that you would like to substract to achieve zoom effect
+
+		local TweenFieldOfView = TweenService:Create(CurrentCamera, CameraTweenInfo, FieldOfView)
+
+		if Player.CameraMode == Enum.CameraMode.Classic then --To achieve first person camera
+			
+			Player.CameraMode = Enum.CameraMode.LockFirstPerson
+			
+		end
+
+		TweenFieldOfView:Play()
+		
+	end
+	
+	if Mode == "Reset" then
+		
+		local Character = Player.Character
+		local Humanoid = Character:WaitForChild("Humanoid")
+
+		local FieldOfView = {FieldOfView = DefaultFieldOfView} --To reset FOV
+		local CameraOffset = {CameraOffset = Vector3.new(0, 0, 0)} --To reset camera offset
+	
+		local TweenFieldOfView = TweenService:Create(CurrentCamera, CameraTweenInfo, FieldOfView)
+		local TweenCameraOffset = TweenService:Create(Humanoid, CameraTweenInfo, CameraOffset)
+	
+		if Player.CameraMode == Enum.CameraMode.LockFirstPerson then --To reset camera mode
+			
+			Player.CameraMode = Enum.CameraMode.Classic
+			
+		end
+	
+		TweenFieldOfView:Play()
+		TweenCameraOffset:Play()
+		
+	end
+		
 end
 
 --- RenderStep ---
@@ -127,9 +114,9 @@ end
 RunService.RenderStepped:Connect(function()
 	
 	if isSteppedIn == true then --To achieve moving-camera-without-right-clicking mode 
-		
-		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
-		
+			
+		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter	
+			
 	end
 	
 	if isAligned == true then --To achieve character alignment to the camera & camera offset obstruction detection

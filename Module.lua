@@ -59,10 +59,8 @@ function ECS:CameraMode(Mode) --To toggle different camera modes
 	
 	if Mode == "FirstPerson" then
 		
-		if Player.CameraMode == Enum.CameraMode.Classic then --To achieve first person camera
-			
-			Player.CameraMode = Enum.CameraMode.LockFirstPerson
-			
+		if Player.CameraMode == Enum.CameraMode.Classic then --To achieve first person camera			
+			Player.CameraMode = Enum.CameraMode.LockFirstPerson			
 		end
 	
 	end
@@ -75,10 +73,8 @@ function ECS:CameraMode(Mode) --To toggle different camera modes
 
 		local TweenFieldOfView = TweenService:Create(CurrentCamera, CameraTweenInfo, FieldOfView)
 
-		if Player.CameraMode == Enum.CameraMode.Classic then --To achieve first person camera
-			
-			Player.CameraMode = Enum.CameraMode.LockFirstPerson
-			
+		if Player.CameraMode == Enum.CameraMode.Classic then --To achieve first person camera			
+			Player.CameraMode = Enum.CameraMode.LockFirstPerson			
 		end
 
 		TweenFieldOfView:Play()
@@ -96,10 +92,8 @@ function ECS:CameraMode(Mode) --To toggle different camera modes
 		local TweenFieldOfView = TweenService:Create(CurrentCamera, CameraTweenInfo, FieldOfView)
 		local TweenCameraOffset = TweenService:Create(Humanoid, CameraTweenInfo, CameraOffset)
 	
-		if Player.CameraMode == Enum.CameraMode.LockFirstPerson then --To reset camera mode
-			
-			Player.CameraMode = Enum.CameraMode.Classic
-			
+		if Player.CameraMode == Enum.CameraMode.LockFirstPerson then --To reset camera mode			
+			Player.CameraMode = Enum.CameraMode.Classic			
 		end
 	
 		TweenFieldOfView:Play()
@@ -113,10 +107,8 @@ end
 
 RunService.RenderStepped:Connect(function()
 	
-	if isSteppedIn == true then --To achieve moving-camera-without-right-clicking mode 
-			
-		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter	
-			
+	if isSteppedIn == true then --To achieve moving-camera-without-right-clicking mode 			
+		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter			
 	end
 	
 	if isAligned == true then --To achieve character alignment to the camera & camera offset obstruction detection

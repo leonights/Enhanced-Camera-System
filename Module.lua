@@ -11,7 +11,6 @@ local TweenService = game:GetService("TweenService")
 --- Constants ---
 
 local Player = Players.LocalPlayer
-local Character = Player.Character
 local CurrentCamera = workspace.CurrentCamera
 local DefaultFieldOfView = 70
 local CameraTweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut) --Feel free to edit your desired tween style or adding more styles as you like
@@ -38,6 +37,7 @@ end
 
 function ECS:Alignment(Status) --To toggle character alignment to the camera
 
+	local Character = Player.Character
 	local Humanoid = Character:WaitForChild("Humanoid")
 
 	Humanoid.AutoRotate = not Status
@@ -49,6 +49,7 @@ function ECS:CameraMode(Mode) --To toggle different camera modes
 
 	if Mode == "Aim" then
 
+		local Character = Player.Character
 		local Humanoid = Character:WaitForChild("Humanoid")
 
 		local FieldOfView = {FieldOfView = DefaultFieldOfView - 20} --Edit the amount of FOV that you would like to substract to achieve zoom effect
@@ -90,6 +91,7 @@ function ECS:CameraMode(Mode) --To toggle different camera modes
 
 	if Mode == "Reset" then
 
+		local Character = Player.Character
 		local Humanoid = Character:WaitForChild("Humanoid")
 
 		local FieldOfView = {FieldOfView = DefaultFieldOfView} --To reset FOV
@@ -114,7 +116,6 @@ end
 --- RaycastParams ---
 
 local Params = RaycastParams.new()
-Params.FilterDescendantsInstances = {Character} --Add the instances that you would like to ignore detection
 Params.FilterType = Enum.RaycastFilterType.Blacklist
 
 --- RenderStep ---
@@ -127,8 +128,11 @@ RunService.RenderStepped:Connect(function()
 
 	if isAligned == true then --To achieve character alignment to the camera & camera offset obstruction detection
 		
+		local Character = Player.Character
 		local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
 		local Head = Character:WaitForChild("Head")
+			
+		Params.FilterDescendantsInstances = {Character} --Add the instances that you would like to ignore detection
 
 		local Result = workspace:Raycast(Head.Position, CurrentCamera.CFrame.Position - Head.Position, Params)
 

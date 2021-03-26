@@ -30,7 +30,7 @@ function ECS:MouseIcon(Status) --To toggle mouse icon
 
 end
 
-function ECS:MouseLock(Status) --To toggle moving-camera-without-right-clicking mode
+function ECS:MouseLock(Status) --To toggle moving-camera-without-right-clicking mode as well as locking mouse at center of screen
 
 	isSteppedIn = Status
 
